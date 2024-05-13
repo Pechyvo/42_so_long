@@ -3,14 +3,12 @@ NAME = so_long
 SRCSDIR			= srcs/
 HDRDIR			= incl/
 PRINTFDIR		= ft_printf/
-#GNLDIR			= get_next_line/
 MLX_DIR 		= minilibx-linux/
 
 SRCS			= ${shell find ${SRCSDIR} -maxdepth 1 -type f -name '*.c'}
 OBJS			= $(SRCS:.c=.o)
 
 PRINTF			= ${PRINTFDIR}libftprintf.a
-#GNL 			= ${GNLDIR}libmlx.a
 MLX 			= ${MLX_DIR}libmlx.a
 
 CC 				= cc
