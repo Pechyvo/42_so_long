@@ -6,7 +6,7 @@
 /*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 23:31:45 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/13 23:44:53 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:37:57 by svalchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	ft_check_empty(char **map);
 static void	ft_textures(t_game *game, char *path, int x, int y);
+static void	ft_exit_texture(t_game *game, int x, int y);
 
 void	ft_read_map(t_game *game, char *path)
 {
 	int		fd;
-	int		h;
 
-	h = 0;
+	game->map.height = 0;
 	game->map.map = malloc(sizeof(char *) * MAP_SIZE);
 	if (ft_strnstr(path, "maps/", 5))
 		fd = open(path, O_RDONLY);
@@ -28,18 +28,18 @@ void	ft_read_map(t_game *game, char *path)
 	{
 		path = ft_strjoin("maps/", path);
 		fd = open(path, O_RDONLY);
+		free(path);
 	}
-	while (fd)
+	while (1)
 	{
-		game->map.map[h] = get_next_line(fd);
-		if (!game->map.map[h])
+		game->map.map[game->map.height] = get_next_line(fd);
+		if (!game->map.map[game->map.height])
 			break ;
-		h++;
+		game->map.height++;
 	}
-	game->map.map[h] = NULL;
+	game->map.map[game->map.height] = NULL;
 	close(fd);
 	ft_check_empty(game->map.map);
-	game->map.height = h;
 	game->map.width = ft_strlen(game->map.map[0]) - 1;
 	ft_validate_map(game);
 }
@@ -65,11 +65,11 @@ void	ft_draw(t_game *game)
 		while (game->map.map[y][x])
 		{
 			if (game->map.map[y][x] == '1')
-				ft_textures(game, TEXTURE_FLOOR, x, y);
-			else if (game->map.map[y][x] == '0')
 				ft_textures(game, TEXTURE_WALL, x, y);
+			else if (game->map.map[y][x] == '0')
+				ft_textures(game, TEXTURE_FLOOR, x, y);
 			else if (game->map.map[y][x] == 'E')
-				ft_textures(game, TEXTURE_EXIT, x, y);
+				ft_exit_texture(game, x, y);
 			else if (game->map.map[y][x] == 'P')
 				ft_textures(game, TEXTURE_CHARACTER, x, y);
 			else if (game->map.map[y][x] == 'C')
@@ -88,5 +88,19 @@ static void	ft_textures(t_game *game, char *path, int x, int y)
 
 	i = 64;
 	img = mlx_xpm_file_to_image(game->mlx_init, path, &i, &i);
+	if (!img)
+	{
+		ft_print_error("Texture not found!");
+		ft_free_window(*game);
+	}
 	mlx_put_image_to_window(game->mlx_init, game->mlx_game, img, x * i, y * i);
+	mlx_destroy_image(game->mlx_init, img);
+}
+
+static void	ft_exit_texture(t_game *game, int x, int y)
+{
+	if (ft_element_count(game, game->map.map, 'C') == 0)
+		ft_textures(game, TEXTURE_EXIT_OPENED, x, y);
+	else
+		ft_textures(game, TEXTURE_EXIT_CLOSED, x, y);
 }

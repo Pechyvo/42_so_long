@@ -6,7 +6,7 @@
 /*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 22:07:14 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/13 23:54:18 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:37:40 by svalchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_find_player(t_game *game)
 	}
 }
 
-int	ft_element_count(t_game *game, char element)
+int	ft_element_count(t_game *game, char **map, char element)
 {
 	int	i;
 	int	j;
@@ -52,9 +52,9 @@ int	ft_element_count(t_game *game, char element)
 	while (j < game->map.height)
 	{
 		i = 0;
-		while (game->map.map[j][i])
+		while (map[j][i])
 		{
-			if (game->map.map[j][i] == element)
+			if (map[j][i] == element)
 				elements++;
 			i++;
 		}
@@ -71,4 +71,21 @@ int	ft_strcmp(char *s1, char *s2)
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;
 	return (s1[i] - s2[i]);
+}
+
+char	*ft_strcpy(char *dst, char *src)
+{
+	int	i;
+
+	i = 0;
+	dst = malloc(sizeof(char) * ft_strlen(src) + 1);
+	if (!dst)
+		return (NULL);
+	while (src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }

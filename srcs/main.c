@@ -6,7 +6,7 @@
 /*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:35:46 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/13 22:18:16 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/05/17 19:36:08 by svalchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	if (argc == 2 && ft_check_extension(argv[1]))
 	{
 		game = ft_calloc(sizeof(t_game), 1);
-		game->character.moves = 1;
+		game->character.moves = 0;
 		game->collectibles = 0;
 		ft_init_game(game, argv[1]);
 	}

@@ -6,7 +6,7 @@
 /*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 22:19:21 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/14 00:01:51 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:38:03 by svalchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_validate_map(t_game *game)
 		ft_print_error("Map has invalid number of elements!");
 		ft_free_map(game);
 	}
-	if (ft_check_pathfinder(game))
+	if (ft_pathfinder(game))
 	{
 		ft_print_error("Player cannot reach exit!");
 		ft_free_map(game);
@@ -117,9 +117,9 @@ static int	ft_check_elements(t_game *game)
 
 static int	ft_check_count(t_game *game)
 {
-	if (ft_element_count(game, 'P') != 1 \
-		|| ft_element_count(game, 'E') != 1 \
-		|| ft_element_count(game, 'C') < 1)
+	if (ft_element_count(game, game->map.map, 'P') != 1 \
+		|| ft_element_count(game, game->map.map, 'E') != 1 \
+		|| ft_element_count(game, game->map.map, 'C') < 1)
 		return (1);
 	return (0);
 }

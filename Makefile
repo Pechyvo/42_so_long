@@ -1,24 +1,28 @@
 NAME = so_long
-
-SRCSDIR			= srcs/
 HDRDIR			= incl/
-PRINTFDIR		= ft_printf/
-MLX_DIR 		= minilibx-linux/
-
-SRCS			= ${shell find ${SRCSDIR} -maxdepth 1 -type f -name '*.c'}
+SRCSDIR			= srcs/
+SRCS			= ${SRCSDIR}main.c \
+				  ${SRCSDIR}ft_game.c \
+				  ${SRCSDIR}ft_map.c \
+				  ${SRCSDIR}ft_map_check.c \
+				  ${SRCSDIR}ft_pathfinder.c \
+				  ${SRCSDIR}ft_hooks.c \
+				  ${SRCSDIR}ft_utils.c
 OBJS			= $(SRCS:.c=.o)
 
+PRINTFDIR		= ft_printf/
 PRINTF			= ${PRINTFDIR}libftprintf.a
+
+MLX_DIR 		= minilibx-linux/
 MLX 			= ${MLX_DIR}libmlx.a
 
 CC 				= cc
-CFLAGS 			= -Wall -Wextra -Werror
+CFLAGS 			= -Wall -Wextra -Werror -I$(HDRDIR) -g
 MLX_FLAGS 		= -L/usr/X11/lib -lX11 -lXext -lm
 
 
 all: $(NAME)
-
-$(NAME): $(OBJ) $(MLX) $(PRINTF) 
+$(NAME): $(OBJS) $(MLX) $(PRINTF) 
 	$(CC) $(CFLAGS) $(MLX_FLAGS) -o $(NAME) $(SRCS) $(PRINTF) $(MLX)
 
 $(PRINTF):
@@ -28,7 +32,7 @@ $(MLX):
 	make -C $(MLX_DIR)
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJS)
 	make fclean -C $(PRINTFDIR)
 
 fclean: clean
@@ -37,10 +41,3 @@ fclean: clean
 re: fclean $(NAME)
 
 .PHONY:	all clean fclean re
-
-# find . -name "*.c" -not -path "./minilibx-linux/*" -exec norminette {} +
-# valgrind --tool=memcheck
-# valgrind --leak-check=full
-# -lmlx -framework OpenGL -framework AppKit
-# -fsanitize=address -g
-# -L/usr/X11/lib -lX11 -lXext -lm

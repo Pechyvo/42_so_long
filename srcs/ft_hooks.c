@@ -20,7 +20,10 @@ static int	ft_condition(t_game *game, int x, int y, int flag);
 int	ft_key_hooks(int kc, t_game *game)
 {
 	if (kc == KEY_ESC || kc == KEY_Q)
+	{
+		ft_printf(COLOR_PURPLE"\n  Game was closed.\n\n"COLOR_RESET);
 		ft_free_window(*game);
+	}
 	if (kc == KEY_UP || kc == KEY_W \
 		|| kc == KEY_LEFT || kc == KEY_A \
 		|| kc == KEY_DOWN || kc == KEY_S \
@@ -33,9 +36,9 @@ int	ft_key_hooks(int kc, t_game *game)
 		}
 		if (ft_movement(kc, game, game->character.x, game->character.y) == 1)
 		{
+			game->character.moves++;
 			ft_printf(COLOR_CYAN"Moves: %d\n" \
 					COLOR_RESET, game->character.moves);
-			game->character.moves++;
 		}
 	}
 	ft_draw(game);
@@ -115,7 +118,7 @@ static int	ft_check_exit(int kc, t_game *game, int x, int y)
 
 static int	ft_condition(t_game *game, int x, int y, int flag)
 {
-	game->collectibles = ft_element_count(game, 'C');
+	game->collectibles = ft_element_count(game, game->map.map, 'C');
 	if (flag == 1 && game->map.map[y - 1][x] == 'E' \
 		&& game->collectibles == 0)
 		return (1);

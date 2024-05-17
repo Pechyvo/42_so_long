@@ -6,7 +6,7 @@
 /*   By: svalchuk <svalchuk@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 18:03:48 by svalchuk          #+#    #+#             */
-/*   Updated: 2024/05/14 00:03:15 by svalchuk         ###   ########.fr       */
+/*   Updated: 2024/05/17 19:33:02 by svalchuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,25 @@
 
 # include "../minilibx-linux/mlx.h"
 # include "../ft_printf/ft_printf.h"
-# include <sys/time.h>
+# include <time.h>
 # include <fcntl.h>
 # include <math.h>
+# include <stdbool.h>
 # include <stdio.h>
 
-# define TEXTURE_WALL "textures/Wall.xpm"
-# define TEXTURE_FLOOR "textures/Floor.xpm"
-# define TEXTURE_EXIT "textures/Exit.xpm"
-# define TEXTURE_CHARACTER "textures/Character.xpm"
-# define TEXTURE_COLLECTIBLE "textures/Collectible.xpm"
+# define TEXTURE_WALL "textures/wall.xpm"
+# define TEXTURE_FLOOR "textures/tile.xpm"
+# define TEXTURE_EXIT_CLOSED "textures/hatch_closed.xpm"
+# define TEXTURE_EXIT_OPENED "textures/hatch_opened.xpm"
+# define TEXTURE_CHARACTER "textures/priest.xpm"
+# define TEXTURE_COLLECTIBLE "textures/coin.xpm"
 
 # define COLOR_RESET "\033[0m"
-# define COLOR_RED "\033[0;31m"
-# define COLOR_GREEN "\033[0;32m"
-# define COLOR_BLUE "\033[0;34m"
-# define COLOR_CYAN "\033[0;36m"
+# define COLOR_RED "\033[1;31m"
+# define COLOR_GREEN "\033[1;32m"
+# define COLOR_BLUE "\033[1;34m"
+# define COLOR_PURPLE "\033[1;35m"
+# define COLOR_CYAN "\033[1;36m"
 
 # define MAP_SIZE 100
 
@@ -45,12 +48,18 @@
 # define KEY_S 115
 # define KEY_D 100
 
+typedef struct s_check
+{
+	int	x;
+	int	y;
+}	t_check;
+
 typedef struct s_character
 {
-	int		x;
-	int		y;
-	int		moves;
-	int		count;
+	int	x;
+	int	y;
+	int	moves;
+	int	count;
 }	t_character;
 
 typedef struct s_map
@@ -74,13 +83,14 @@ void	ft_init_game(t_game *game, char *path);
 void	ft_read_map(t_game *game, char *path);
 void	ft_validate_map(t_game *game);
 void	ft_draw(t_game *game);
+int		ft_pathfinder(t_game *game);
 int		ft_key_hooks(int kc, t_game *game);
-int		ft_check_pathfinder(t_game *game);
 void	ft_free_window(t_game game);
 void	ft_free_map(t_game *game);
 void	ft_print_error(char *str);
 void	ft_find_player(t_game *game);
-int		ft_element_count(t_game *game, char element);
+int		ft_element_count(t_game *game, char **map, char element);
 int		ft_strcmp(char *s1, char *s2);
+char	*ft_strcpy(char *dst, char *src);
 
 #endif
