@@ -1,4 +1,4 @@
-NAME = so_long
+cd NAME = so_long
 HDRDIR			= incl/
 SRCSDIR			= srcs/
 SRCS			= ${SRCSDIR}main.c \
@@ -14,11 +14,11 @@ PRINTFDIR		= ft_printf/
 PRINTF			= ${PRINTFDIR}libftprintf.a
 
 MLX_DIR 		= minilibx-linux/
-MLX 			= ${MLX_DIR}libmlx.a
+MLX 			= ${MLX_DIR}libmlx.a -lX11 -lXext -lXrandr -lXinerama -lXcursor -lXrender -lXfixes -lXpm -lm
 
 CC 				= cc
 CFLAGS 			= -Wall -Wextra -Werror -I$(HDRDIR) -g
-MLX_FLAGS 		= -L/usr/X11/lib -lX11 -lXext -lm
+MLX_FLAGS 		= -L/usr/X11/lib
 
 
 all: $(NAME)
