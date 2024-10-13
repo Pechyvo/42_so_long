@@ -1,4 +1,4 @@
-cd NAME = so_long
+NAME = so_long
 HDRDIR			= incl/
 SRCSDIR			= srcs/
 SRCS			= ${SRCSDIR}main.c \
